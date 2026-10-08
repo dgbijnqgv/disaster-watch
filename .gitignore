@@ -1,0 +1,17 @@
+node_modules/
+dist/
+release/
+coverage/
+
+# Secrets and signing keys: never commit these
+.env*
+*.keystore
+*.jks
+*.p12
+*.pem
+
+# Local editor and tool settings
+.claude/settings.local.json
+.vscode/
+.DS_Store
+Thumbs.db

@@ -1,0 +1,92 @@
+{
+  "name": "disaster-watch",
+  "productName": "Disaster Watch",
+  "version": "1.0.0",
+  "description": "Live natural-disaster map with personal threat levels, alerts and a daily brief",
+  "type": "module",
+  "private": true,
+  "main": "electron/main.js",
+  "author": "Disaster Watch",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "icons": "node scripts/icons.mjs",
+    "web": "node scripts/build.mjs --serve",
+    "desktop": "node scripts/build.mjs && electron .",
+    "dist:win": "node scripts/build.mjs && electron-builder --win",
+    "dist:mac": "node scripts/build.mjs && electron-builder --mac",
+    "android": "node scripts/build.mjs && cap sync android && cap open android",
+    "test": "node --test",
+    "coverage": "node --test --experimental-test-coverage",
+    "lint": "eslint .",
+    "check": "eslint . && node --test && node scripts/build.mjs"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.5.2",
+    "@capacitor/background-runner": "^3.0.0",
+    "@capacitor/core": "^8.5.2",
+    "@capacitor/geolocation": "^8.2.2",
+    "@capacitor/local-notifications": "^8.3.1",
+    "leaflet": "^1.9.4"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^8.5.2",
+    "@eslint/js": "^10.0.1",
+    "electron": "^44.4.4",
+    "electron-builder": "^26.15.3",
+    "esbuild": "^0.28.2",
+    "eslint": "^10.11.0",
+    "globals": "^17.12.0",
+    "sharp": "^0.35.4"
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": true,
+    "electron-winstaller@5.4.0": true,
+    "@capacitor/background-runner@3.0.0": true
+  },
+  "build": {
+    "appId": "com.disasterwatch.app",
+    "productName": "Disaster Watch",
+    "copyright": "Disaster Watch",
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "src/core/**/*",
+      "package.json",
+      "!node_modules/**/*"
+    ],
+    "npmRebuild": false,
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "build/icon.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "perMachine": false,
+      "createDesktopShortcut": true,
+      "runAfterFinish": true
+    },
+    "mac": {
+      "target": [
+        "dmg"
+      ],
+      "category": "public.app-category.weather",
+      "icon": "build/icon.png"
+    },
+    "linux": {
+      "target": [
+        "AppImage"
+      ],
+      "category": "Utility"
+    }
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

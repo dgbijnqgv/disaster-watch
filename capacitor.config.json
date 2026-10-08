@@ -1,0 +1,18 @@
+{
+  "appId": "com.disasterwatch.app",
+  "appName": "Disaster Watch",
+  "webDir": "dist",
+  "plugins": {
+    "BackgroundRunner": {
+      "label": "com.disasterwatch.background",
+      "src": "runner.js",
+      "event": "check",
+      "repeat": true,
+      "interval": 15,
+      "autoStart": true
+    },
+    "LocalNotifications": {
+      "iconColor": "#ea6a1f"
+    }
+  }
+}

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Disaster Watch</string>
+    <string name="title_activity_main">Disaster Watch</string>
+    <string name="package_name">com.disasterwatch.app</string>
+    <string name="custom_url_scheme">com.disasterwatch.app</string>
+</resources>

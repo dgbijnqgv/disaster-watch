@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Disaster Watch</title>
+  <meta name="description" content="Live natural-disaster map with personal threat levels, alerts and a daily brief.">
+  <meta name="theme-color" content="#f4f6f9">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://tile.openstreetmap.org https://gibs.earthdata.nasa.gov https://earthquake.usgs.gov; connect-src 'self' https:; object-src 'none'; base-uri 'none'">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="app.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app">
+    <div id="map" aria-label="Map of active natural disasters"></div>
+
+    <aside id="panel">
+      <header class="top">
+        <div class="brand"><img src="icon.svg" alt="" width="28" height="28"><span>Disaster Watch</span></div>
+        <button id="locBtn" class="chip" data-tip="Change your location" data-icon="pin" data-size="16"><span class="chip-text"><span id="locName">Locating…</span><span id="locHint" class="chip-hint"></span></span></button>
+      </header>
+
+      <div class="scroll">
+
+      <section id="brief" class="brief" aria-live="polite">
+        <span id="briefIcon" class="status-icon"></span>
+        <div class="brief-text">
+          <h2 id="briefTitle">Loading live data…</h2>
+          <p id="briefSummary" class="summary"></p>
+          <p id="briefAction" class="brief-action" hidden></p>
+        </div>
+      </section>
+      <div class="statusline">
+        <span id="updated"></span>
+        <span class="row gap">
+          <button class="refresh" data-open-sources="" data-tip="See where this information comes from" data-icon="info" data-size="14">Sources</button>
+          <button id="refreshBtn" class="refresh" data-tip="Check for new data now. It also updates on its own every 10 minutes." data-icon="refresh" data-size="14">Refresh</button>
+        </span>
+      </div>
+
+      <nav class="tabs" role="tablist">
+        <button role="tab" data-tab="near" aria-selected="true">Near me</button>
+        <button role="tab" data-tab="world">World</button>
+        <button role="tab" data-tab="prepare">Prepare</button>
+        <button role="tab" data-tab="settings">Settings</button>
+      </nav>
+
+      <div class="tabpanes">
+        <section data-pane="near">
+          <div id="nearList"></div>
+        </section>
+
+        <section data-pane="world" hidden>
+          <details class="fold">
+            <summary>Filter events</summary>
+            <div class="filters">
+              <div id="typeFilters" class="chips"></div>
+              <label class="row gap small">Minimum threat
+                <select id="minLevel"></select>
+              </label>
+            </div>
+          </details>
+          <div id="worldList"></div>
+        </section>
+
+        <section data-pane="prepare" hidden>
+          <h3>Threat levels</h3>
+          <ul id="levelKey" class="levelkey"></ul>
+          <h3>Your go-bag <span id="kitProgress" class="muted small"></span></h3>
+          <ul id="kit" class="checklist"></ul>
+          <h3>By hazard</h3>
+          <div id="guides"></div>
+          <p class="muted small">Guidance adapted from public emergency-preparedness advice (e.g. Ready.gov, Red Cross). Always follow your local authorities.</p>
+        </section>
+
+        <section data-pane="settings" hidden>
+          <h3>Location</h3>
+          <div class="row gap wrap">
+            <button id="gpsBtn" class="btn small">Use my location</button>
+            <button id="pickBtn" class="btn ghost small">Pick on map</button>
+          </div>
+          <form id="searchForm" class="row gap">
+            <input id="searchInput" type="search" placeholder="Search a city or address" autocomplete="off">
+            <button class="btn ghost small">Go</button>
+          </form>
+
+          <h3>Watch area</h3>
+          <label class="stack">Show events within <b><span id="radiusVal"></span> km</b>
+            <input id="radius" type="range" min="50" max="1500" step="50">
+          </label>
+
+          <h3>Alerts</h3>
+          <label class="row gap"><input id="notifyToggle" type="checkbox"> Notify me about threats near me and send a daily brief</label>
+          <label class="row gap small">Only when threat is at least <select id="notifyLevel"></select></label>
+          <label class="row gap small">Daily brief at <input id="briefTime" type="time"></label>
+          <button id="testNotify" class="btn ghost small">Send a test notification</button>
+
+          <p id="bgNote" class="muted small"></p>
+          <label id="autoStartRow" class="row gap" hidden><input id="autoStart" type="checkbox"> Start Disaster Watch when I sign in</label>
+
+          <h3>Appearance</h3>
+          <label class="row gap small">Theme
+            <select id="theme">
+              <option value="light">Light</option>
+              <option value="dark">Dark</option>
+              <option value="system">Match system</option>
+            </select>
+          </label>
+
+          <h3>About</h3>
+          <div class="about">
+            <p><strong>Disaster Watch</strong> <span class="muted small">version {{version}}</span></p>
+            <p>Shows natural disasters around the world, tells you which ones could affect you, and what to do about them.</p>
+            <p class="muted small">Made with JavaScript, HTML and CSS. The map uses Leaflet; the desktop app uses Electron and the Android app uses Capacitor.</p>
+            <button class="btn ghost small" data-open-sources="" data-icon="info" data-size="16">Where the information comes from</button>
+            <p class="muted small">Disaster Watch is an awareness tool, not an official warning service. In an emergency follow instructions from local authorities and call 911 / 112.</p>
+          </div>
+        </section>
+      </div>
+
+      </div>
+
+      <section id="detail" class="detail" hidden></section>
+    </aside>
+
+    <div id="legend" class="legend"></div>
+    <dialog id="sourcesDialog" class="sheet" aria-labelledby="sourcesTitle">
+      <header class="sheet-head">
+        <h2 id="sourcesTitle">Where this information comes from</h2>
+        <button class="close" aria-label="Close" data-icon="close" data-size="18"></button>
+      </header>
+      <div id="sourcesBody" class="sheet-body"></div>
+    </dialog>
+
+    <div id="pickHint" class="pickhint" hidden><span>Click the map to set your location</span><button id="pickCancel" class="linklike">Cancel</button></div>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
