@@ -85,6 +85,7 @@ After any change, run `npm run check`.
 
 ## 7. Sharing the source code
 
-Judges may ask for the app and its source. Either zip the project folder without `node_modules`, `dist`, `release`
-and `android/app/build`, or put it in a GitHub repository (no GitHub Actions needed). The Windows installer is
+Judges may ask for the app and its source. The code is in the private GitHub repository
+<https://github.com/dgbijnqgv/disaster-watch>. To share it, either make the repository public (Settings → General →
+Danger Zone → Change visibility) or add the judge as a collaborator (Settings → Collaborators). The Windows installer is
 `release/Disaster Watch Setup 1.0.0.exe` after `npm run dist:win`.
