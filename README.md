@@ -6,6 +6,12 @@ All disaster data is live — nothing about current events is bundled in the app
 
 Credits for libraries, data and advice: [CREDITS.md](CREDITS.md). How AI was used: [AI-DISCLOSURE.md](AI-DISCLOSURE.md).
 
+## Contributors
+
+- Lucas Horton
+- Xiaofeng Ding
+- Ismael Amanullah
+
 ## Build
 
 Requires Node 22+.

@@ -7,6 +7,11 @@
   "private": true,
   "main": "electron/main.js",
   "author": "Disaster Watch",
+  "contributors": [
+    "Lucas Horton",
+    "Xiaofeng Ding",
+    "Ismael Amanullah"
+  ],
   "scripts": {
     "build": "node scripts/build.mjs",
     "icons": "node scripts/icons.mjs",
