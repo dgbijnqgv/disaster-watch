@@ -1,7 +1,5 @@
 # Credits
 
-Disaster Watch is made by Lucas Horton, Xiaofeng Ding and Ismael Amanullah.
-
 Disaster Watch is built on the open-source software, public data services and public safety advice listed here.
 How AI was used to build it is described in [AI-DISCLOSURE.md](AI-DISCLOSURE.md).
 
