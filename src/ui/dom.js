@@ -1,6 +1,5 @@
 // Small DOM and HTML helpers shared by the UI modules.
 import { LEVELS } from '../core/index.js';
-import { icon } from '../icons.js';
 
 export const $ = (selector, root = document) => root.querySelector(selector);
 export const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -28,10 +27,6 @@ export const paragraphs = (s) => String(s ?? '')
   .filter(Boolean)
   .map((p) => `<p>${esc(p)}</p>`)
   .join('');
-
-/** Round hazard icon coloured by threat level. */
-export const hazardBadge = (e, size = 36) =>
-  `<span class="hz" style="--c:${LEVELS[e.level].color};--s:${size}px">${icon(e.type, Math.round(size * 0.55))}</span>`;
 
 /** Threat level name with a coloured dot. */
 export const levelChip = (level) => `<span class="lvl" style="--c:${LEVELS[level].color}">${LEVELS[level].name}</span>`;

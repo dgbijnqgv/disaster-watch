@@ -1,18 +1,19 @@
 // The Near me and World lists, the "what to do" card for threats near the user, and the World filters.
 import { LEVELS, TYPES, adviceFor, byUrgency, headline, plural, relevant, where } from '../core/index.js';
 import { icon } from '../icons.js';
-import { $, esc, hazardBadge, levelOptions, timeAgo } from './dom.js';
+import { $, esc, levelOptions, timeAgo } from './dom.js';
 import { passesFilters, saveSettings, state } from './state.js';
 
 const WORLD_LIMIT = 250;
 const FILTER_TYPES = ['earthquake', 'wildfire', 'storm', 'flood', 'volcano', 'severe', 'drought', 'other'];
 
-/** One row for any event: a sentence and where it is. The badge colour carries the threat level. */
+/** One row for any event: a plain hazard icon, a sentence, then its threat level and where it is. */
 function eventRow(e) {
-  const meta = state.loc ? where(e) : timeAgo(e.time);
+  const level = LEVELS[e.level];
+  const meta = [`${level.name} threat`, state.loc ? where(e) : timeAgo(e.time)].filter(Boolean).join(' · ');
   return `<li><button class="ev" data-id="${esc(e.id)}">
-    ${hazardBadge(e, 34)}
-    <span class="ev-text"><span class="ev-title">${esc(headline(e))}</span>${meta ? `<span class="ev-meta">${esc(meta)}</span>` : ''}</span>
+    <span class="ev-icon">${icon(e.type, 20)}</span>
+    <span class="ev-text"><span class="ev-title">${esc(headline(e))}</span><span class="ev-meta"><i class="dot" style="--c:${level.color}"></i>${esc(meta)}</span></span>
   </button></li>`;
 }
 
@@ -36,8 +37,11 @@ function adviceCard(threats) {
   </section>`;
 }
 const empty = (text) => `<p class="empty">${text}</p>`;
+const failed = () => state.loadError && !state.fetchedAt; // nothing has loaded yet, so no list can be trusted
+const FAILED = 'Events could not be loaded. Disaster Watch will try again shortly.';
 
 function renderNear() {
+  if (failed()) { $('#nearList').innerHTML = empty(FAILED); return; }
   if (!state.loc) {
     $('#nearList').innerHTML = empty('Allow location access or set your location in Settings to see what is near you.');
     return;
@@ -47,15 +51,19 @@ function renderNear() {
   const minor = near.filter((e) => !relevant(e));
   // Minor events stay folded away so they don't compete for attention; keep the fold open across refreshes.
   const wasOpen = $('#nearList details')?.open ?? false;
-  $('#nearList').innerHTML = adviceCard(threats) + (threats.length
-    ? `<h3 class="group">Could affect you</h3>${eventList(threats)}`
-    : empty('Nothing near you needs attention.'))
+  const reaching = threats.filter((e) => e.inZone);
+  const nearby = threats.filter((e) => !e.inZone);
+  $('#nearList').innerHTML = adviceCard(threats)
+    + (reaching.length ? `<h3 class="group">Could reach you</h3>${eventList(reaching)}` : '')
+    + (nearby.length ? `<h3 class="group">Nearby, not expected to reach you</h3>${eventList(nearby)}` : '')
+    + (threats.length ? '' : empty('Nothing near you needs attention.'))
     + (minor.length
       ? `<details class="fold"${wasOpen ? ' open' : ''}><summary>${plural(minor.length, 'minor event', 'minor events')} nearby</summary>${eventList(minor)}</details>`
       : '');
 }
 
 function renderWorld() {
+  if (failed()) { $('#worldList').innerHTML = empty(FAILED); return; }
   const world = state.events.filter(passesFilters).sort((a, b) => (b.level - a.level) || (b.time - a.time));
   if (!world.length) {
     $('#worldList').innerHTML = empty('No events match your filters.');

@@ -43,11 +43,13 @@ test('brief: clear, watch and action states', () => {
   const moderate = ev({ type: 'flood', level: 2, lat: 35, lon: -118, place: 'Somewhere' });
   b = buildBrief(annotate([far, moderate], home, 300), home, { radiusKm: 300 });
   assert.equal(b.status, 'watch');
+  assert.equal(b.summary, '1 disaster is nearby but not expected to reach you.'); // 111 km away, beyond a moderate flood's reach
 
   const warning = ev({ type: 'flood', level: 3, local: true, title: 'Flash Flood Warning' });
   b = buildBrief(annotate([far, moderate, warning], home, 300), home, { radiusKm: 300 });
   assert.equal(b.status, 'action');
   assert.equal(b.items[0], warning);
+  assert.equal(b.summary, '1 disaster could reach you. 1 other is nearby.');
   assert.match(b.text, /flash flood warning is in effect/);
   assert.doesNotMatch(b.text, /\p{Extended_Pictographic}/u);
 });

@@ -4,7 +4,7 @@ Installable app (Windows, macOS, Android) showing live natural disasters on a wo
 
 All disaster data is live — nothing about current events is bundled in the app. No API keys needed.
 
-Credits for libraries, data and advice: [CREDITS.md](CREDITS.md). How AI was used: [AI-DISCLOSURE.md](AI-DISCLOSURE.md). Congressional App Challenge checklist: [SUBMISSION.md](SUBMISSION.md).
+Credits for libraries, data and advice: [CREDITS.md](CREDITS.md). How AI was used: [AI-DISCLOSURE.md](AI-DISCLOSURE.md).
 
 ## Build
 

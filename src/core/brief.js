@@ -59,13 +59,23 @@ export function buildBrief(events, loc, { radiusKm = 300, sources } = {}) {
   // Serious events that can't reach the user raise the brief to "watch", never to "action".
   const level = items.reduce((m, e) => Math.max(m, e.inZone ? e.level : Math.min(e.level, 2)), 0);
 
+  // Say how many can reach the user apart from those that are only nearby, so the count never overstates the risk.
+  const reaching = items.filter((e) => e.inZone).length;
+  const others = items.length - reaching;
+  const counts = [
+    reaching && `${plural(reaching, 'disaster', 'disasters')} could reach you.`,
+    others && (reaching
+      ? `${plural(others, 'other is', 'others are')} nearby.`
+      : `${plural(others, 'disaster is', 'disasters are')} nearby but not expected to reach you.`),
+  ].filter(Boolean).join(' ');
+
   let status; let title; let summary;
   if (!loc) {
     [status, title, summary] = ['none', 'Set your location', 'Disaster Watch needs your location to tell you what could affect you.'];
   } else if (level >= 3) {
-    [status, title, summary] = ['action', 'Take action now', `${plural(items.length, 'disaster', 'disasters')} could affect you.`];
+    [status, title, summary] = ['action', 'Take action now', counts];
   } else if (items.length) {
-    [status, title, summary] = ['watch', 'Stay alert', `${plural(items.length, 'disaster is', 'disasters are')} active near you.`];
+    [status, title, summary] = ['watch', 'Stay alert', counts];
   } else {
     [status, title, summary] = ['clear', 'No threats near you', `Nothing within ${radiusKm} km needs your attention.`];
   }

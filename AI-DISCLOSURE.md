@@ -1,6 +1,6 @@
 # AI Disclosure
 
-The Congressional App Challenge allows AI tools as long as all AI use is fully disclosed. This file describes that use.
+This file describes how AI was used to build Disaster Watch.
 
 ## Tool used
 

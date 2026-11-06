@@ -2,7 +2,7 @@
 // what it is, whether it affects you, what to do; everything else is folded away.
 import { LEVELS, TYPES, adviceFor, eventImage, headline, where } from '../core/index.js';
 import { icon } from '../icons.js';
-import { $, esc, hazardBadge, paragraphs, safeUrl, timeAgo } from './dom.js';
+import { $, esc, paragraphs, safeUrl, timeAgo } from './dom.js';
 import { GUIDE_TYPES } from './prepare.js';
 import { feedKey } from './sources.js';
 import { state } from './state.js';
@@ -77,7 +77,7 @@ export function showDetail(e) {
     <button class="btn ghost small back">${icon('chevronLeft', 16)} Back</button>
     ${e.inZone ? '' : figure}
     <div class="detail-head">
-      ${hazardBadge(e, 40)}
+      <span class="ev-icon">${icon(e.type, 20)}</span>
       <span>${esc(TYPES[e.type].label)}<span class="lvl-text" style="--c:${level.color}" data-tip="${esc(level.blurb)}">${esc(level.name)} threat</span></span>
     </div>
     <h2>${esc(headline(e))}</h2>

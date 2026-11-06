@@ -74,6 +74,7 @@ async function refresh() {
   } catch (err) {
     state.loadError = err;
     renderBrief();
+    renderLists();
     console.error(err);
   } finally {
     loading = false;
