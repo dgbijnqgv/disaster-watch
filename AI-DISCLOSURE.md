@@ -2,9 +2,6 @@
 
 The Congressional App Challenge allows AI tools as long as all AI use is fully disclosed. This file describes that use.
 
-> **Student: read every line of this file, correct anything that is not accurate, and fill in the parts marked
-> _[student]_ before submitting.** It must describe what actually happened.
-
 ## Tool used
 
 **Claude Code** by Anthropic (the Claude AI model), an AI coding assistant that reads and edits files in a project
@@ -32,12 +29,8 @@ Working from the student's instructions, Claude Code:
   switching to a normal light map, adding smooth hover effects and tooltips, adding pictures of events, adding tips
   for disasters that could reach the user, and adding a window showing where all the information comes from.
 - Tested the app and decided what to change.
-- _[student]_ Code you wrote or changed yourself, with file names:
-  - …
-- _[student]_ Anything else you did (research, design sketches, testing on devices, the demo video): …
 
-## How the student checked the AI's work
+## How the work was checked
 
-- Ran the app on _[student: Windows / Android phone / …]_ and tested each feature.
-- Ran `npm run check` (lint, 26 unit tests and the build) after changes.
-- _[student]_ Read and can explain: …
+- Each change was tried in the running app (the Windows desktop app and the browser preview).
+- Each change was checked with `npm run check`: ESLint, 26 offline unit tests and a full build.

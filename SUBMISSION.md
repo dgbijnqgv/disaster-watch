@@ -18,7 +18,7 @@ The rules say all coding must be done by the student, AI may be used only if ful
 the entirety of the technical development", and you must show significant personal contribution and understanding.
 Judges may ask for the source code and question you about it.
 
-- [ ] Fill in and check [AI-DISCLOSURE.md](AI-DISCLOSURE.md); paste its content (or a summary and a link) into the
+- [ ] Check that [AI-DISCLOSURE.md](AI-DISCLOSURE.md) is accurate and add anything you built yourself; paste its content (or a summary and a link) into the
       submission form wherever it asks about tools or AI.
 - [ ] Build part of the app yourself before the deadline (ideas in section 6) and list it in AI-DISCLOSURE.md.
 - [ ] Learn how the code works well enough to explain it. Start with the "Code" section of the [README](README.md),
